@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<button onclick="toggleTheme()">🌙 Dark Mode</button>
+
+<div class="box">
+    <h2>Admin Login</h2>
+
+    <input id="user" placeholder="Username"><br>
+    <input id="pass" type="password" placeholder="Password"><br>
+
+    <button onclick="login()">Login</button>
+</div>
+
+<script>
+const API = "https://smart-attendence-ek62.onrender.com";
+
+/* ========== LOGIN ========== */
+function login() {
+    fetch(API + "/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: document.getElementById("user").value,
+            password: document.getElementById("pass").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.setItem("login", "true");
+            window.location = "index.html";
+        } else {
+            alert("Wrong credentials");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        alert("Server not reachable");
+    });
+}
+
+/* ========== THEME TOGGLE ========== */
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
